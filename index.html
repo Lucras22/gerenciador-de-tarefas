@@ -9,7 +9,18 @@
 <body>
     <div class="todo-container">
         <h1>Lista de Tarefas</h1>
+        
+        <!-- Campo para adicionar nova tarefa -->
         <input type="text" id="new-task" placeholder="Adicione uma nova tarefa">
+        
+        <!-- Seletor de prioridade -->
+        <select id="task-priority">
+            <option value="alta">Alta Prioridade</option>
+            <option value="media">Média Prioridade</option>
+            <option value="baixa">Baixa Prioridade</option>
+        </select>
+
+        <!-- Botão para adicionar tarefa -->
         <button id="add-task">Adicionar Tarefa</button>
 
         <h2>Tarefas Pendentes</h2>
@@ -18,6 +29,7 @@
         <h2>Tarefas Concluídas</h2>
         <ul id="completed-tasks"></ul>
     </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
