@@ -7,28 +7,56 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="todo-container">
-        <h1>Lista de Tarefas</h1>
-        
-        <!-- Campo para adicionar nova tarefa -->
-        <input type="text" id="new-task" placeholder="Adicione uma nova tarefa">
-        
-        <!-- Seletor de prioridade -->
-        <select id="task-priority">
-            <option value="alta">Alta Prioridade</option>
-            <option value="media">Média Prioridade</option>
-            <option value="baixa">Baixa Prioridade</option>
-        </select>
-
-        <!-- Botão para adicionar tarefa -->
-        <button id="add-task">Adicionar Tarefa</button>
-
-        <h2>Tarefas Pendentes</h2>
+    <div class="todo-wrapper">
+        <h1>Gerenciador de Tarefas</h1>
+    
+        <!-- Botão para adicionar nova tarefa -->
+        <button id="add-task-btn">Adicionar Nova Tarefa</button>
+    
+        <!-- Formulário de criação de tarefa (escondido por padrão) -->
+        <div id="task-form-container" class="hidden">
+            <h2>Criar Nova Tarefa</h2>
+            <form id="task-form">
+                <div class="form-group">
+                    <label for="task-name">Nome da Tarefa:</label>
+                    <input type="text" id="task-name" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="task-desc">Descrição:</label>
+                    <textarea id="task-desc" rows="3" required></textarea>
+                </div>
+    
+                <div class="form-group">
+                    <label for="start-date">Data de Início:</label>
+                    <input type="date" id="start-date" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="end-date">Data de Fim:</label>
+                    <input type="date" id="end-date" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="priority">Prioridade:</label>
+                    <select id="priority" required>
+                        <option value="alta">Alta</option>
+                        <option value="media">Média</option>
+                        <option value="baixa">Baixa</option>
+                    </select>
+                </div>
+    
+                <div class="form-buttons">
+                    <button type="button" id="save-task">Salvar</button>
+                    <button type="button" id="cancel-task">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    
+        <!-- Lista de tarefas -->
         <ul id="task-list"></ul>
-
-        <h2>Tarefas Concluídas</h2>
-        <ul id="completed-tasks"></ul>
     </div>
+    
     
     <script src="script.js"></script>
 </body>
