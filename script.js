@@ -6,18 +6,15 @@ const saveTaskButton = document.getElementById('save-task');
 const cancelTaskButton = document.getElementById('cancel-task');
 const taskList = document.getElementById('task-list');
 
-// Mostrar o formulário ao clicar em "Adicionar Nova Tarefa"
 addTaskButton.addEventListener('click', () => {
     taskFormContainer.classList.remove('hidden');
     addTaskButton.classList.add('hidden');
 });
 
-// Cancelar e esconder o formulário
 cancelTaskButton.addEventListener('click', () => {
     resetForm();
 });
 
-// Salvar tarefa e adicioná-la à lista
 saveTaskButton.addEventListener('click', addTask);
 
 function addTask() {
@@ -28,6 +25,11 @@ function addTask() {
     const priority = document.getElementById('priority').value;
 
     if (!taskName || !taskDesc || !startDate || !endDate || !priority) return;
+
+    if (new Date(endDate) < new Date(startDate)) {
+        alert("A data de fim não pode ser anterior à data de início.");
+        return;
+    }
 
     const taskItem = createTaskElement(taskName, taskDesc, startDate, endDate, priority);
     taskList.appendChild(taskItem);
@@ -59,12 +61,21 @@ function createTaskElement(name, desc, start, end, priority) {
     taskPriority.classList.add('task-priority');
     taskPriority.textContent = `Prioridade: ${priority.charAt(0).toUpperCase() + priority.slice(1)}`;
 
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Excluir';
+    deleteButton.classList.add('delete-task-btn');
+    deleteButton.addEventListener('click', () => {
+        taskItem.remove();
+        saveTasks();
+    });
+
     taskInfo.appendChild(taskName);
     taskInfo.appendChild(taskDesc);
     taskInfo.appendChild(taskDates);
     taskInfo.appendChild(taskPriority);
 
     taskItem.appendChild(taskInfo);
+    taskItem.appendChild(deleteButton);
 
     return taskItem;
 }
@@ -82,7 +93,8 @@ function saveTasks() {
         tasks.push({
             name: task.querySelector('.task-name').textContent.replace('Nome: ', ''),
             desc: task.querySelector('.task-desc').textContent.replace('Descrição: ', ''),
-            dates: task.querySelector('.task-dates').textContent,
+            start: task.querySelector('.task-dates').textContent.split('|')[0].replace('Início: ', '').trim(),
+            end: task.querySelector('.task-dates').textContent.split('|')[1].replace('Fim: ', '').trim(),
             priority: task.classList[0]
         });
     });
@@ -97,8 +109,48 @@ function loadTasks() {
         const taskItem = createTaskElement(
             task.name,
             task.desc,
-            task.dates.split('|')[0].replace('Início: ', ''),
-            task.dates.split('|')[1].replace('Fim: ', ''),
+            task.start,
+            task.end,
+            task.priority.replace('task-priority-', '')
+        );
+        taskList.appendChild(taskItem);
+    });
+}
+
+const sortSelect = document.getElementById('sort-tasks');
+sortSelect.addEventListener('change', sortTasks);
+
+function sortTasks() {
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    switch (sortSelect.value) {
+        case 'importance':
+            tasks.sort((a, b) => {
+                const order = { 'task-priority-alta': 1, 'task-priority-media': 2, 'task-priority-baixa': 3 };
+                return order[a.priority] - order[b.priority];
+            });
+            break;
+
+        case 'date-near':
+            tasks.sort((a, b) => new Date(a.start) - new Date(b.start));
+            break;
+
+        case 'date-far':
+            tasks.sort((a, b) => new Date(b.start) - new Date(a.start));
+            break;
+
+        default:
+            return;
+    }
+
+    // Limpa e recria a lista
+    taskList.innerHTML = '';
+    tasks.forEach(task => {
+        const taskItem = createTaskElement(
+            task.name,
+            task.desc,
+            task.start,
+            task.end,
             task.priority.replace('task-priority-', '')
         );
         taskList.appendChild(taskItem);
