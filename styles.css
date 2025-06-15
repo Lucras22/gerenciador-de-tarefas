@@ -1,4 +1,3 @@
-/* Centraliza todo o conteúdo */
 .todo-wrapper {
     max-width: 500px;
     margin: 0 auto;
@@ -31,7 +30,6 @@ button#add-task-btn:hover {
     background-color: #0056b3;
 }
 
-/* Estiliza o formulário */
 #task-form-container {
     background-color: #f9f9f9;
     padding: 20px;
@@ -65,6 +63,8 @@ input[type="text"], input[type="date"], textarea, select {
 
 textarea {
     resize: vertical;
+    min-height: 60px;
+    max-height: 200px;
 }
 
 .form-buttons {
@@ -94,7 +94,6 @@ textarea {
     background-color: #c82333;
 }
 
-/* Lista de tarefas */
 ul#task-list {
     list-style-type: none;
     padding: 0;
@@ -110,6 +109,12 @@ li {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    transition: 0.2s ease-in-out;
+}
+
+li:hover {
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    transform: scale(1.01);
 }
 
 li .task-info {
@@ -120,14 +125,17 @@ li .task-info {
 
 .task-priority-alta {
     border-left: 5px solid red;
+    background-color: #ffe5e5;
 }
 
 .task-priority-media {
     border-left: 5px solid orange;
+    background-color: #fff3e0;
 }
 
 .task-priority-baixa {
     border-left: 5px solid green;
+    background-color: #e6f9e6;
 }
 
 .task-name, .task-desc, .task-dates, .task-priority {
@@ -143,3 +151,26 @@ li .task-info {
     font-weight: bold;
 }
 
+.delete-task-btn {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: flex-end;
+}
+
+.delete-task-btn:hover {
+    background-color: #c82333;
+}
+
+#sort-tasks {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    background-color: #f4f4f4;
+}
